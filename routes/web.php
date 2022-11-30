@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'IndexController@index');
 Route::get('/import', 'IndexController@store');
 Route::get('/send-email', 'IndexController@sendEmail');
+Route::get('/send-stats', 'IndexController@sendStats');

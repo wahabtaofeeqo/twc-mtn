@@ -49,13 +49,25 @@ class IndexController extends Controller
      */
     public function sendEmail()
     {
-        $users = User::all();
+        $users = User::where('mail_sent', 0)->get();
         foreach ($users as $key => $user) {
-            if($user->mail_sent) {
-                $this->doSend($user);
-            }
-            break;
+            $this->doSend($user);
         }
+    }
+
+    /**
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sendStats()
+    {
+        $users = User::count();
+        $sent = User::where('mail_sent', 1)->count();
+
+        return response([
+            'sent' => $sent,
+            'users' => $users
+        ]);
     }
 
     private function doSend($user) {
@@ -80,7 +92,7 @@ class IndexController extends Controller
             $user->save();
         }
         catch (\Throwable $th) {
-            throw $th;
+            //throw $th;
         }
     }
 }

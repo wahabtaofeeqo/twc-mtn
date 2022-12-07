@@ -22,11 +22,29 @@ class IndexController extends Controller
      */
     public function index()
     {
-        $connector = new WindowsPrintConnector("Gprinter GP-3200TLA");
-        $printer = new Printer($connector);
-        $printer->text("Hello World!\n");
-        $printer->cut();
-        $printer->close();
+        return view('index');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function welcome()
+    {
+        return view('welcome');
+    }
+
+    /**
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function verify($code)
+    {
+        return response([
+            'status' => true,
+            'name' => 'Wahab Taofeek'
+        ]);
     }
 
     /**

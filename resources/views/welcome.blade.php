@@ -34,7 +34,7 @@
 
         <div class="container-fluid h-100">
             <div class="row h-100">
-                <div class="col-lg-6 d-flex h-100 align-items-center">
+                <div class="col-lg-6 d-flex h-100 bg-dark align-items-center">
                     <div class="col-lg-8 mx-auto">
                         <h1 class="mb-4 font-weight-bold" style="color: #ac2376">WristbandNG</h1>
                         <div class="mb-4">
@@ -49,11 +49,11 @@
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo accusamus corrupti deserunt fuga velit cupiditate maxime quaerat odit, inventore repudiandae eius ex in nisi mollitia natus accusantium atque itaque veritatis.
                         </p>
 
-                        <input type="text" autofocus id="code" style="outline: none; color: transparent">
+                        <input type="text" autofocus id="code" style="outline: none; color: transparent; background: transparent">
                     </div>
                 </div>
 
-                <div class="col-lg-6 holder h-100"></div>
+                <div class="col-lg-6 holder h-100 px-0"></div>
             </div>
         </div>
 
@@ -158,8 +158,7 @@
                 // Expressions
                 face = model.getObjectByName( 'Head_4' );
                 const expressions = Object.keys(face.morphTargetDictionary);
-                activeAction = actions[ 'Idle' ];
-                //console.log(activeAction);
+                activeAction = actions[ 'Sitting' ];
                 activeAction.play();
             }
 

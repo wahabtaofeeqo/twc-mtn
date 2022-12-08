@@ -22,6 +22,8 @@ class IndexController extends Controller
      */
     public function index()
     {
+        // $user = User::find(1);
+        // Mail::to($user)->send(new QrCodeMail($user, ''));
         return view('index');
     }
 
@@ -42,7 +44,7 @@ class IndexController extends Controller
     public function verify($code)
     {
         return response([
-            'status' => true,
+            'status' => false,
             'name' => 'Wahab Taofeek'
         ]);
     }

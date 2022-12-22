@@ -14,9 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'IndexController@index');
-Route::get('/clock-in', 'IndexController@welcome');
-Route::get('/verify/{code}', 'IndexController@verify');
-
-Route::get('/import', 'IndexController@store');
-Route::get('/send-email', 'IndexController@sendEmail');
-Route::get('/send-stats', 'IndexController@sendStats');
+Route::get('create-users', 'IndexController@createFamilyMembers');

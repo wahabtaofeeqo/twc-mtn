@@ -23,13 +23,9 @@ class UserFactory extends Factory
         $code = str_pad(strval($this->counter), 4, "0", STR_PAD_LEFT);
 
         return [
-            'name' => fake()->name(),
+            'name' => null,
             'code' => 'CHAPERONE/'. $code,
-            'category' => 'CHAPERONE'
-            // 'email' => fake()->unique()->safeEmail(),
-            // 'email_verified_at' => now(),
-            // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            // 'remember_token' => Str::random(10),
+            'category' => 'Chaperone'
         ];
     }
 

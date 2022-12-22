@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class UsersImport implements ToModel, WithHeadingRow
 {
@@ -15,16 +16,8 @@ class UsersImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        $email = $row['email'];
-        if(!$email) return;
-
-        $exist = User::where('email', $row['email'])->exists();
-        if($exist) return null;
-
         return new User([
-            'email' => $row['email'],
-            'name' => $row['name'],
-            'password' => 'password'
+
         ]);
     }
 }

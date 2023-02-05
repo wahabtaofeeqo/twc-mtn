@@ -35,7 +35,7 @@ class QrcodeMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'MerryBet',
+            subject: 'MTN Sales Conference',
         );
     }
 

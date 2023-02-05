@@ -14,4 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'IndexController@index');
-Route::get('create-users', 'IndexController@createFamilyMembers');
+Route::get('emails', 'IndexController@sendEmail');
+Route::get('clock-in', 'IndexController@welcome');
+Route::get('login', 'IndexController@login')->name('login');
+Route::post('login', 'IndexController@authenticate')->name('login');
+Route::get('profile', 'IndexController@profile')->name('profile')->middleware('auth');

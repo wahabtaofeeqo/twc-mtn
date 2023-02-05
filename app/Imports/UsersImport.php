@@ -16,8 +16,22 @@ class UsersImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        return new User([
+        $email = $row['email'];
+        $user = User::where('email', $email)->first();
+        if($user) return;
 
+        return new User([
+            'email' => $email,
+            'name' => $row['name'],
+            'code' => $this->genCode()
         ]);
+    }
+
+    function genCode() {
+        while (true) {
+            $code = random_int(100000, 999999);
+            if (!User::where('code', $code)->exists()) break;
+        }
+        return $code;
     }
 }

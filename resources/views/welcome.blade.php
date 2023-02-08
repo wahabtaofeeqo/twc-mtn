@@ -20,7 +20,7 @@
                     MTN is Africa's largest mobile network operator, sharing the benefits of a modern connected life with 272m customers in 19 markets across Africa and beyond.
                 </p>
 
-                <input type="password" readonly class="form-control" autofocus id="code">
+                <input type="password" class="form-control bg-transparent border-dark" style="box-shadow: none" autofocus id="code">
             </div>
         </div>
 
@@ -177,7 +177,7 @@
                     document.querySelector(".valid").style.visibility = "visible";
                     document.querySelector(".invalid").style.visibility = "hidden";
 
-                    element.innerHTML = `Welcome, ${res.data.name}`;
+                    element.innerHTML = `Welcome, ${data.data.name}`;
                     element.style.visibility = "visible";
 
                     //
@@ -209,6 +209,9 @@
                 document.querySelector(".user").style.visibility = "hidden";
                 document.querySelector(".valid").style.visibility = "hidden";
                 document.querySelector(".invalid").style.visibility = "hidden";
+
+                //
+                location.reload();
             }, 5000);
         }
 

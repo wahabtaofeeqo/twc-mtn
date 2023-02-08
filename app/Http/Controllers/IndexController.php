@@ -12,7 +12,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\User;
 use Mail;
 use Auth;
-use App\Mail\QrCodeMail;
+use App\Mail\QrcodeMail;
 
 class IndexController extends Controller
 {
@@ -108,7 +108,7 @@ class IndexController extends Controller
      */
     public function sendEmail()
     {
-        $users = User::all();
+        $users = User::where('sent', 0)->get();
         foreach ($users as $key => $user) {
             $this->doSend($user);
         }
@@ -137,9 +137,12 @@ class IndexController extends Controller
             $file = 'qr_' . $user->code . ".png";
             $filename = $path . "/" . $file;
 
-            \QrCode::color(255, 0, 127)->format('png')
-                ->size(500)->generate(strval($user->code), $filename);
-            Mail::to($user)->send(new QrCodeMail($user, $file));
+            if(!file_exists($filename)) {
+                \QrCode::color(255, 0, 127)->format('png')
+                    ->size(500)->generate(strval($user->code), $filename);
+            }
+
+            Mail::to($user)->send(new QrcodeMail($user, $file));
 
             // Update model
             $user->sent = true;

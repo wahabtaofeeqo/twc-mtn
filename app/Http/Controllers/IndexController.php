@@ -108,10 +108,11 @@ class IndexController extends Controller
      */
     public function sendEmail()
     {
-        $users = User::where('sent', 0)->get();
-        foreach ($users as $key => $user) {
-            $this->doSend($user);
-        }
+        // $users = User::where('sent', 0)->get();
+        // foreach ($users as $key => $user) {
+        //     $this->doSend($user);
+        // }
+        $this->doSend(User::find(3));
     }
 
     /**

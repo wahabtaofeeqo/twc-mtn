@@ -1,5 +1,10 @@
-@extends('app')
+<style>
+    body {
+        overflow: hidden;
+    }
+</style>
 
+@extends('app')
 @section('content')
 <div class="container-fluid h-100 holder bg-black m-0" id="holder"></div>
 

@@ -177,7 +177,8 @@
                     document.querySelector(".valid").style.visibility = "visible";
                     document.querySelector(".invalid").style.visibility = "hidden";
 
-                    element.innerHTML = `Welcome, ${data.data.name}`;
+                    const lastname = `${data.data.lastname ? data.data.lastname : ''}`
+                    element.innerHTML = `Welcome, ${data.data.firstname} ${lastname}`;
                     element.style.visibility = "visible";
 
                     //

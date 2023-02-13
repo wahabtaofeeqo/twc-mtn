@@ -22,7 +22,9 @@ class UsersImport implements ToModel, WithHeadingRow
 
         return new User([
             'email' => $email,
-            'name' => $row['name'],
+            'firstname' => $row['firstname'],
+            'lastname' => $row['lastname'],
+            'phone' => $row['phone'],
             'code' => $this->genCode()
         ]);
     }

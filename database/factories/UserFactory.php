@@ -15,17 +15,11 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    protected $counter = 0;
 
     public function definition()
     {
-        $this->counter++;
-        $code = str_pad(strval($this->counter), 4, "0", STR_PAD_LEFT);
-
         return [
-            'name' => null,
-            'code' => 'CHAPERONE/'. $code,
-            'category' => 'Chaperone'
+
         ];
     }
 

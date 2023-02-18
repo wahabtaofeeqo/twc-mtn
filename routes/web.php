@@ -14,8 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'IndexController@index');
+Route::get('export', 'IndexController@export');
 Route::get('emails', 'IndexController@sendEmail');
 Route::get('clock-in', 'IndexController@welcome');
 Route::get('login', 'IndexController@login')->name('login');
 Route::post('login', 'IndexController@authenticate')->name('login');
 Route::get('profile', 'IndexController@profile')->name('profile')->middleware('auth');
+Route::get('dashboard', 'IndexController@dashboard')->name('dashboard')->middleware('auth');

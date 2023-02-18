@@ -7,9 +7,11 @@ use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use App\Imports\UsersImport;
+use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\User;
+use App\Models\ClockedIn;
 use Mail;
 use Auth;
 use App\Mail\QrcodeMail;
@@ -66,6 +68,11 @@ class IndexController extends Controller
         if ($user) {
             Auth::login($user);
             $request->session()->regenerate();
+
+            if($user->firstname == 'Admin')
+                return redirect()->intended('dashboard');
+
+            //
             return redirect()->intended('profile');
         }
 
@@ -81,11 +88,30 @@ class IndexController extends Controller
     public function verify($code)
     {
         $user = User::where('code', $code)->first();
-        return response([
-            'data' => $user,
-            'status' => $user ? true : false,
-            'message' => $user ? 'Operation succeedded' : 'Operation not succeeded'
-        ]);
+        if($user) {
+
+            $model = ClockedIn::where('user_id', $user->id)
+                ->whereDate('created_at', date('Y-m-d'))->first();
+
+            if(!$model) {
+                ClockedIn::create([
+                    'user_id' => $user->id
+                ]);
+            }
+
+            //
+            return response([
+                'data' => $user,
+                'status' => true,
+                'message' => 'Operation succeedded'
+            ]);
+        }
+        else {
+            return response([
+                'status' => false,
+                'message' => 'Operation not succeeded'
+            ]);
+        }
     }
 
     /**
@@ -102,17 +128,23 @@ class IndexController extends Controller
         ]);
     }
 
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
+    }
+
     /**
      *
      * @return \Illuminate\Http\Response
      */
     public function sendEmail()
     {
-        // $users = User::where('sent', 0)->get();
-        // foreach ($users as $key => $user) {
-        //     $this->doSend($user);
-        // }
-        $this->doSend(User::find(3));
+        $users = User::where('sent', 0)->get();
+        foreach ($users as $key => $user) {
+            $this->doSend($user);
+        }
+
+        return 'Email sent';
     }
 
     /**
@@ -155,6 +187,29 @@ class IndexController extends Controller
     }
 
     function profile() {
+        $user = Auth::user();
+        if($user->firstname == 'Admin')
+            return redirect('dashboard');
+
+        //
         return view('profile');
+    }
+
+    function dashboard() {
+        $user = Auth::user();
+        if($user->firstname != 'Admin')
+            return redirect('profile');
+
+        $users = User::count();
+        $all = ClockedIn::count();
+        $data = ClockedIn::whereDate('created_at', date('Y-m-d'))
+            ->with('user')->paginate(20);
+
+        //
+        return view('dashboard', [
+            'all' => $all,
+            'data' => $data,
+            'users' => $users
+        ]);
     }
 }

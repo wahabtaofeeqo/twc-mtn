@@ -25,7 +25,9 @@ class UsersImport implements ToModel, WithHeadingRow
             'firstname' => $row['firstname'],
             'lastname' => $row['lastname'],
             'phone' => $row['phone'],
-            'code' => $this->genCode()
+            'code' => $this->genCode(),
+            'business' => $row['business'],
+            'super' => true,
         ]);
     }
 

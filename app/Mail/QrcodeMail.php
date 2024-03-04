@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
 class QrcodeMail extends Mailable
 {
@@ -26,7 +27,7 @@ class QrcodeMail extends Mailable
         $this->user = $user;
         $this->qrCode = $qrCode;
     }
-
+ 
     /**
      * Get the message envelope.
      *
@@ -36,6 +37,7 @@ class QrcodeMail extends Mailable
     {
         return new Envelope(
             subject: 'MTN Sales Conference',
+            from: new Address('no-reply@mtnconference.com', 'Planning Committee'),
         );
     }
 

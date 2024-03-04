@@ -6,8 +6,9 @@ use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
-class UsersImport implements ToModel, WithHeadingRow
+class UsersImport implements ToModel, WithHeadingRow, WithCalculatedFormulas
 {
     /**
     * @param array $row
@@ -17,17 +18,29 @@ class UsersImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         $email = $row['email'];
+        if(!$email) return;
+
         $user = User::where('email', $email)->first();
         if($user) return;
 
+        $name = $row['name'];
+        $nameArr = explode(' ', $name);
+
+        $category = $row['category'];
+        $location = $row['location'];
+        $phone = isset($row['phone']) ? $row['phone'] : null;
+
+        $code = "name=" . urlencode($name) . "&email=" . $email 
+            . "&org=" . urlencode($category) . "&jobTitle=" . urlencode($location);
+
+        //
         return new User([
+            'code' => $code,
+            'phone' => $phone,
             'email' => $email,
-            'firstname' => $row['firstname'],
-            'lastname' => $row['lastname'],
-            'phone' => $row['phone'],
-            'code' => $this->genCode(),
-            'business' => $row['business'],
-            'super' => true,
+            'business' => $category,
+            'firstname' => $name[0],
+            'lastname' => isset($nameArr[1]) ? $nameArr[1] : '',
         ]);
     }
 

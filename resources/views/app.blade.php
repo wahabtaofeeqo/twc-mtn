@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>MTN - Sales Conference 2023</title>
+        <title>MTN - Sales Conference 2024</title>
 
         <!-- Styles -->
         <style>
@@ -24,13 +24,9 @@
     <body>
 
         @yield('content')
-
-        <script src="{{asset('assets/js/three.js')}}"></script>
-        <script src="{{asset('assets/js/GLTFLoader.js')}}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
         @stack('scripts')
     </body>
 </html>

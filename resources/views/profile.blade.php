@@ -12,7 +12,7 @@
         <div class="col-lg-5 mx-auto mb-4">
             <div class="card rounded-0 rounded-start border-0 border-end border-3 border-warning">
                 <div class="card-header">
-                    <h4 class="card-title h5">Day 4 (16th Feb, 2023) </h4>
+                    <h4 class="card-title h5">Day 4 (16th Feb, 2024) </h4>
                 </div>
                 <div class="card-body">
 
@@ -23,7 +23,7 @@
                     <p class="card-text">
                         Y’ello <strong>{{auth()->user()->firstname . ' ' . auth()->user()->lastname}}</strong>,
 
-                        Welcome to the day 4 of the 2023 S&D Sales Conference.
+                        Welcome to the day 4 of the 2024 S&D Sales Conference.
                         Please find below the activities outlined for today.
                     </p>
 

@@ -3,6 +3,7 @@
 @section('content')
 <div class="container-fluid h-100">
     <div class="row h-100">
+        <div class="col-lg-6 holder h-100 px-0"></div>
         <div class="col-lg-6 d-flex h-100 bg-warning align-items-center">
             <div class="col-lg-8 mx-auto">
                 <h1><strong>Sales Conference</strong></h1>
@@ -23,13 +24,14 @@
                 <input type="password" class="form-control bg-transparent border-dark" style="box-shadow: none" autofocus id="code">
             </div>
         </div>
-
-        <div class="col-lg-6 holder h-100 px-0"></div>
     </div>
 </div>
-@endsection
+@endsection 
 
 @push('scripts')
+    <script src="{{asset('assets/js/three.js')}}"></script>
+    <script src="{{asset('assets/js/GLTFLoader.js')}}"></script>
+ 
     <script>
 
         const api = { state: 'Walking' };
@@ -39,10 +41,10 @@
         let container = document.querySelector(".holder");
 
         init();
-        animate();
+        animate(); 
 
         function init() {
-
+ 
             //
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.25, 100);
             camera.position.set(0, 2, 10);
@@ -88,7 +90,7 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.outputEncoding = THREE.sRGBEncoding;
 
-            window.addEventListener( 'resize', onWindowResize);
+            window.addEventListener('resize', onWindowResize);
 
             //
             container.appendChild( renderer.domElement );

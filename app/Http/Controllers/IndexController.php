@@ -28,21 +28,16 @@ class IndexController extends Controller
         return view('index');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function welcome()
     {
         return view('welcome');
     }
 
-     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function metaView()
+    {
+        return view('meta');
+    }
+
     public function login()
     {
         if(Auth::user())
@@ -64,7 +59,7 @@ class IndexController extends Controller
             'code' => ['required'],
         ]);
 
-        $user = User::where('code', $credentials['code'])->first();
+        $user = User::where('email', $credentials['code'])->first();
         if ($user) {
             Auth::login($user);
             $request->session()->regenerate();
@@ -87,9 +82,11 @@ class IndexController extends Controller
      */
     public function verify($code)
     {
+        // $code = str_replace('@', '%40', $code);
+        //
         $user = User::where('code', $code)->first();
-        if($user) {
 
+        if($user) {
             $model = ClockedIn::where('user_id', $user->id)
                 ->whereDate('created_at', date('Y-m-d'))->first();
 
@@ -109,9 +106,9 @@ class IndexController extends Controller
         else {
             return response([
                 'status' => false,
-                'message' => 'Operation not succeeded'
+                'message' => 'Account Information not found'
             ]);
-        }
+        } 
     }
 
     /**
@@ -125,7 +122,7 @@ class IndexController extends Controller
         Excel::import(new UsersImport, $request->file('file'));
         return response([
             'message' => 'Imported'
-        ]);
+        ]); 
     }
 
     public function export()
@@ -139,11 +136,30 @@ class IndexController extends Controller
      */
     public function sendEmail()
     {
-        $users = User::where('sent', 0)->get();
-        foreach ($users as $key => $user) {
-            $this->doSend($user);
-        }
+        // $users = User::where('sent', 0)->get();
+        // foreach ($users as $key => $user) {
+        //     $this->doSend($user);
+        // }
 
+        $user = User::firstOrCreate(['email' => 'olasunkanmi@ideashouseng.com'], [
+            'firstname' => 'Tester',
+            'lastname' => 'Tester',
+            'code' => 'name=Afamefuna+Ogujiofor&email=Afamefuna.Ogujiofor@mtn.com&org=Delegate&jobTitle=East'
+        ]);
+
+        $copy2 = User::firstOrCreate(['email' => 'deloper447@gmail.com'], [
+            'firstname' => 'Tester',
+            'lastname' => 'Tester',
+            'code' => 'name=Afamefuna+Ogujiofor&email=Afamefuna.Ogujiofor@mtn.com&org=Delegate&jobTitle=East'
+        ]);
+        
+        $copy1 = User::firstOrCreate(['email' => 'taofeekolamilekan218@gmail.com'], [
+            'firstname' => 'Tao',
+            'lastname' => 'Domain',
+            'code' => 'name=Afamefuna+Ogujiofor&email=Afamefuna.Ogujiofor@mtn.com&org=Delegate&jobTitle=East'
+        ]);
+
+        $this->doSend($user, [$copy1, $copy2]);
         return 'Email sent';
     }
 
@@ -162,26 +178,29 @@ class IndexController extends Controller
         ]);
     }
 
-    private function doSend($user) {
+    private function doSend($user, $userCopy = []) {
         try {
             $path = public_path('qrcode/' . $user->email);
             if(!file_exists($path)) mkdir($path, 0777, true);
 
-            $file = 'qr_' . $user->code . ".png";
+            $file = "qr.png";
             $filename = $path . "/" . $file;
 
             if(!file_exists($filename)) {
                 \QrCode::color(255, 0, 127)->format('png')
-                    ->size(500)->generate(strval($user->code), $filename);
+                    ->size(500)->generate($user->code, $filename);
             }
 
-            Mail::to($user)->send(new QrcodeMail($user, $file));
+            //
+            Mail::to($user)
+                ->cc($userCopy)->send(new QrcodeMail($user, $file));
 
             // Update model
             $user->sent = true;
             $user->save();
         }
-        catch (\Throwable $th) {
+        catch (\Throwable $e) {
+            info($e->getMessage());
             // throw $th;
         }
     }

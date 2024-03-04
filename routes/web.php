@@ -17,6 +17,7 @@ Route::get('/', 'IndexController@index');
 Route::get('export', 'IndexController@export');
 Route::get('emails', 'IndexController@sendEmail');
 Route::get('clock-in', 'IndexController@welcome');
+Route::get('clock-in-2', 'IndexController@metaView');
 Route::get('login', 'IndexController@login')->name('login');
 Route::post('login', 'IndexController@authenticate')->name('login');
 Route::get('profile', 'IndexController@profile')->name('profile')->middleware('auth');

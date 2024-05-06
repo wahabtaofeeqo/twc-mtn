@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('firstname');
             $table->string('lastname')->nullable();
             $table->string('code');
+            $table->string('qr')->nullable();
             $table->string('email')->unique();
             $table->string('phone')->nullable()->unique();
             $table->boolean('sent')->nullable()->default(false);

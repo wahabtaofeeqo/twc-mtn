@@ -141,25 +141,31 @@ class IndexController extends Controller
         //     $this->doSend($user);
         // }
 
-        $user = User::firstOrCreate(['email' => 'olasunkanmi@ideashouseng.com'], [
-            'firstname' => 'Tester',
-            'lastname' => 'Tester',
-            'code' => 'name=Afamefuna+Ogujiofor&email=Afamefuna.Ogujiofor@mtn.com&org=Delegate&jobTitle=East'
-        ]);
+        // $user = User::firstOrCreate(['email' => 'olasunkanmi@ideashouseng.com'], [
+        //     'firstname' => 'Tester',
+        //     'lastname' => 'Tester',
+        //     'code' => 'name=Afamefuna+Ogujiofor&email=Afamefuna.Ogujiofor@mtn.com&org=Delegate&jobTitle=East'
+        // ]);
 
-        $copy2 = User::firstOrCreate(['email' => 'deloper447@gmail.com'], [
-            'firstname' => 'Tester',
-            'lastname' => 'Tester',
-            'code' => 'name=Afamefuna+Ogujiofor&email=Afamefuna.Ogujiofor@mtn.com&org=Delegate&jobTitle=East'
-        ]);
-        
         $copy1 = User::firstOrCreate(['email' => 'taofeekolamilekan218@gmail.com'], [
             'firstname' => 'Tao',
             'lastname' => 'Domain',
             'code' => 'name=Afamefuna+Ogujiofor&email=Afamefuna.Ogujiofor@mtn.com&org=Delegate&jobTitle=East'
         ]);
 
-        $this->doSend($user, [$copy1, $copy2]);
+        // $copy2 = User::firstOrCreate(['email' => 'deloper447@gmail.com'], [
+        //     'firstname' => 'Tester',
+        //     'lastname' => 'Tester',
+        //     'code' => 'name=Afamefuna+Ogujiofor&email=Afamefuna.Ogujiofor@mtn.com&org=Delegate&jobTitle=East'
+        // ]);
+
+        // $copy1 = User::firstOrCreate(['email' => 'ayo4real2009@gmail.com'], [
+        //     'firstname' => 'Tester',
+        //     'lastname' => 'Tester',
+        //     'code' => 'name=Afamefuna+Ogujiofor&email=Afamefuna.Ogujiofor@mtn.com&org=Delegate&jobTitle=East'
+        // ]);
+
+        $this->doSend($copy1, []);
         return 'Email sent';
     }
 
@@ -180,27 +186,37 @@ class IndexController extends Controller
 
     private function doSend($user, $userCopy = []) {
         try {
-            $path = public_path('qrcode/' . $user->email);
-            if(!file_exists($path)) mkdir($path, 0777, true);
+            if(!$user->qr) {
+                $path = public_path('qrcode/' . $user->email);
+                if(!file_exists($path)) mkdir($path, 0777, true);
 
-            $file = "qr.png";
-            $filename = $path . "/" . $file;
+                $file = "qr.png";
+                $filename = $path . "/" . $file;
 
-            if(!file_exists($filename)) {
-                \QrCode::color(255, 0, 127)->format('png')
-                    ->size(500)->generate($user->code, $filename);
+                if(!file_exists($filename)) {
+                    \QrCode::color(255, 0, 127)->format('png')
+                        ->size(500)->generate($user->code, $filename);
+                }
+
+                $uploadParams = [
+                    'resource_type' => 'auto'
+                ];
+                $path = cloudinary()->upload($filename, $uploadParams)->getSecurePath();
             }
+            else $path = $user->qr;
 
             //
             Mail::to($user)
-                ->cc($userCopy)->send(new QrcodeMail($user, $file));
+                ->cc($userCopy)->send(new QrcodeMail($user, $path));
 
             // Update model
+            $user->qr = $path;
             $user->sent = true;
+
             $user->save();
         }
         catch (\Throwable $e) {
-            info($e->getMessage());
+            // info($e->getMessage());
             // throw $th;
         }
     }

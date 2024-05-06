@@ -3,7 +3,7 @@
     <img src="https://res.cloudinary.com/taoltech/image/upload/v1709549520/banner_hgbja7.jpg" alt="Banner">
 </div>
 
-# Y’ello team!
+# Y’ello!
 
 The most anticipated gathering is almost here for the MTN Nigeria Sales team, Partners and Stakeholders- The S&D Sales Conference!
 
